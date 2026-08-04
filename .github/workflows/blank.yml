@@ -1,93 +1,25 @@
-import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
-
-plugins {
-  alias(libs.plugins.android.application)
-  alias(libs.plugins.kotlin.compose)
-  alias(libs.plugins.google.devtools.ksp)
-  alias(libs.plugins.roborazzi)
-  alias(libs.plugins.secrets)
-  alias(libs.plugins.google.services)
-}
-
-android {
-  namespace = "com.example"
-  compileSdk { version = release(36) { minorApiLevel = 1 } }
-
-  defaultConfig {
-    applicationId = "com.aistudio.ezatalsarra.p2pmsh"
-    minSdk = 24
-    targetSdk = 36
-    versionCode = 1
-    versionName = "1.0"
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  signingConfigs {
-    create("release") {
-      val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
-      storeFile = file(keystorePath)
-      storePassword = System.getenv("STORE_PASSWORD")
-      keyAlias = "upload"
-      keyPassword = System.getenv("KEY_PASSWORD")
-    }
-    create("debugConfig") {
-      storeFile = file("${rootDir}/debug.keystore")
-      storePassword = "android"
-      keyAlias = "androiddebugkey"
-      keyPassword = "android"
-    }
-  }
-
-  buildTypes {
-    release {
-      isCrunchPngs = false
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("release")
-    }
-    debug { signingConfig = signingConfigs.getByName("debugConfig") }
-  }
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-  }
-  buildFeatures {
-    compose = true
-    buildConfig = true
-  }
-}
-
-dependencies {
-  implementation(platform(libs.androidx.compose.bom))
-  implementation(platform(libs.firebase.bom))
-  
-  // صلاحيات الوصول للبلوتوث والموقع
-  implementation(libs.accompanist.permissions)
-  
-  implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.compose.material.icons.core)
-  implementation(libs.androidx.compose.material.icons.extended)
-  implementation(libs.androidx.compose.material3)
-  implementation(libs.androidx.compose.ui)
-  implementation(libs.androidx.compose.ui.graphics)
-  implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.lifecycle.runtime.compose)
-  implementation(libs.androidx.lifecycle.runtime.ktx)
-  implementation(libs.androidx.lifecycle.viewmodel.compose)
-  
-  // التنقل بين الشاشات
-  implementation(libs.androidx.navigation.compose)
-  
-  // قاعدة البيانات المحلية (Room)
-  implementation(libs.androidx.room.ktx)
-  implementation(libs.androidx.room.runtime)
-  "ksp"(libs.androidx.room.compiler)
-  
-  // الاتصال المباشر (P2P - Nearby Connections)
-  implementation(libs.play.services.nearby)
-  
-  implementation(libs.kotlinx.coroutines.android)
-  implementation(libs.kotlinx.coroutines.core)
-}
+name: Build Android APK
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Build APK from App Folder
+        run: |
+          cd app
+          flutter pub get
+          flutter build apk --release
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ezzat-Saraa-App
+          path: app/build/app/outputs/flutter-apk/app-release.apk
+          
