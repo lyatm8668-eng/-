@@ -1,7 +1,6 @@
 package com.example.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -40,11 +37,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.data.AppDao
 import com.example.data.Message
@@ -87,20 +81,15 @@ fun ChatDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
-                    Column {
-                        Text(deviceName, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                        Text("متصل عبر P2P", fontSize = 10.sp, color = MaterialTheme.colorScheme.primary)
-                    }
-                },
+                title = { Text(deviceName) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
-                    titleContentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
         }
@@ -121,35 +110,20 @@ fun ChatDetailScreen(
                     val isMine = msg.senderId == "me"
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                        horizontalArrangement = if (isMine) Arrangement.Start else Arrangement.End
+                        horizontalArrangement = if (isMine) Arrangement.End else Arrangement.Start
                     ) {
                         Box(
                             modifier = Modifier
                                 .widthIn(max = 280.dp)
-                                .clip(RoundedCornerShape(
-                                    topStart = 16.dp, 
-                                    topEnd = 16.dp, 
-                                    bottomStart = if (isMine) 4.dp else 16.dp, 
-                                    bottomEnd = if (isMine) 16.dp else 4.dp
-                                ))
                                 .background(
-                                    color = if (isMine) MaterialTheme.colorScheme.primary else Color.White.copy(alpha = 0.05f)
-                                )
-                                .border(
-                                    1.dp, 
-                                    if (isMine) Color.Transparent else Color.White.copy(alpha = 0.05f), 
-                                    RoundedCornerShape(
-                                        topStart = 16.dp, 
-                                        topEnd = 16.dp, 
-                                        bottomStart = if (isMine) 4.dp else 16.dp, 
-                                        bottomEnd = if (isMine) 16.dp else 4.dp
-                                    )
+                                    color = if (isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                                    shape = RoundedCornerShape(12.dp)
                                 )
                                 .padding(12.dp)
                         ) {
                             Text(
                                 text = msg.content,
-                                color = if (isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onBackground
+                                color = if (isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -158,8 +132,7 @@ fun ChatDetailScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .padding(12.dp),
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedTextField(
@@ -167,15 +140,9 @@ fun ChatDetailScreen(
                     onValueChange = { messageText = it },
                     modifier = Modifier.weight(1f),
                     placeholder = { Text("اكتب رسالة...") },
-                    shape = RoundedCornerShape(24.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.1f),
-                        focusedContainerColor = Color.White.copy(alpha = 0.02f),
-                        unfocusedContainerColor = Color.White.copy(alpha = 0.02f)
-                    )
+                    shape = RoundedCornerShape(24.dp)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 IconButton(
                     onClick = {
                         if (messageText.isNotBlank()) {
@@ -189,12 +156,9 @@ fun ChatDetailScreen(
                             }
                         }
                     },
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(MaterialTheme.colorScheme.primary)
+                    modifier = Modifier.background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
                 ) {
-                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send", tint = MaterialTheme.colorScheme.onPrimary)
+                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send", tint = Color.White)
                 }
             }
         }

@@ -1,8 +1,5 @@
 package com.example.ui.screens
 
-import androidx.compose.ui.graphics.Brush
-import com.example.ui.theme.PrimaryColor
-import com.example.ui.theme.PrimaryVariant
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -26,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,14 +56,14 @@ fun SplashScreen(onNavigateToMain: () -> Unit) {
                 modifier = Modifier
                     .size(120.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surface),
+                    .background(MaterialTheme.colorScheme.primaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.WifiTethering,
                     contentDescription = null,
                     modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
@@ -75,22 +71,13 @@ fun SplashScreen(onNavigateToMain: () -> Unit) {
                 text = stringResource(id = R.string.app_name),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                style = TextStyle(
-                    brush = Brush.horizontalGradient(
-                        colors = listOf(
-                            PrimaryVariant,
-                            PrimaryColor
-                        )
-                    )
-                )
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(id = R.string.developer_name),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
-                letterSpacing = 1.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
