@@ -1,0 +1,6 @@
+{
+  "name": "عزت السراء",
+  "description": "تطبيق محادثات لا مركزية بدون إنترنت (P2P Mesh). برمجة وتطوير: عزت السراء.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

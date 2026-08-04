@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">عزت السراء</string>
+    <string name="developer_name">برمجة وتطوير: عزت السراء</string>
+    <string name="chats_tab">الدردشات</string>
+    <string name="status_tab">الحالات</string>
+    <string name="radar_tab">الرادار</string>
+    <string name="settings_tab">الإعدادات</string>
+    <string name="about_app">حول التطبيق</string>
+    <string name="ghost_mode">وضع التخفي</string>
+    <string name="self_destruct">رسائل ذاتية التدمير</string>
+    <string name="dark_mode">الوضع الليلي</string>
+    <string name="radar_searching">جاري البحث عن الأجهزة القريبة...</string>
+</resources>
